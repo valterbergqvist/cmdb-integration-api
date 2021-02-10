@@ -1,0 +1,172 @@
+---
+openapi: 3.0.2
+info:
+  title: CMDB REST API
+  version: 1.0.0
+  description: CMDB Rest API
+paths:
+  /systems:
+    summary: Path used to manage the list of systems.
+    description: "The REST endpoint/path used to list and create zero or more `System`\
+      \ entities.  This path contains a `GET` and `POST` operation to perform the\
+      \ list and create tasks, respectively."
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/System'
+          description: Successful response - returns an array of `System` entities.
+      operationId: getSystems
+      summary: List All Systems
+      description: Gets a list of all `System` entities.
+    post:
+      requestBody:
+        description: A new `System` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/System'
+        required: true
+      responses:
+        "201":
+          description: Successful response.
+      operationId: createSystem
+      summary: Create a System
+      description: Creates a new instance of a `System`.
+  /systems/{systemId}:
+    summary: Path used to manage a single System.
+    description: "The REST endpoint/path used to get, update, and delete single instances\
+      \ of an `System`.  This path contains `GET`, `PUT`, and `DELETE` operations\
+      \ used to perform the get, update, and delete tasks, respectively."
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/System'
+          description: Successful response - returns a single `System`.
+      operationId: getSystem
+      summary: Get a System
+      description: Gets the details of a single instance of a `System`.
+    put:
+      requestBody:
+        description: Updated `System` information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/System'
+        required: true
+      responses:
+        "202":
+          description: Successful response.
+      operationId: updateSystem
+      summary: Update a System
+      description: Updates an existing `System`.
+    delete:
+      responses:
+        "204":
+          description: Successful response.
+      operationId: deleteSystem
+      summary: Delete a System
+      description: Deletes an existing `System`.
+    parameters:
+      - name: systemId
+        description: A unique identifier for a `System`.
+        schema:
+          type: string
+        in: path
+        required: true
+components:
+  schemas:
+    System:
+      title: Root Type for System
+      description: Describes a H2 System
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/Component'
+        metadata:
+          type: object
+          properties:
+            owners:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  tcad:
+                    type: string
+            managers:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  tcad:
+                    type: string
+            application_manager:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  tcad:
+                    type: string
+      example:
+        id: Hid100008748
+        name: Test name
+        description: Test
+        components:
+          - id: "32424234223"
+            name: Instance 1
+            description: Used for..
+        metadata:
+          owners:
+            - name: Rickard Löfström
+              email: rickard.lofstrom@teliacompany.com
+              tcad: gjo835
+          managers:
+            - name: Rickard Löfström
+              email: rickard.lofstrom@teliacompany.com
+              tcad: gjo835
+          application_manager:
+            - name: Rickard Löfström
+              email: rickard.lofstrom@teliacompany.com
+              tcad: gjo835
+    Component:
+      title: Root Type for Component
+      description: This is a component of a H2 System
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      example:
+        id: "32424234223"
+        name: Instance 1
+        description: Used for..
